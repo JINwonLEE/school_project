@@ -1,0 +1,26 @@
+qsub Hashtable start
+Run 5,131072,1,40,40
+data success
+init success
+Running Time: 1.112860 s
+Correctness: Correct
+Run 5,131072,2,40,40
+data success
+init success
+Running Time: 0.629137 s
+Correctness: Correct
+Run 5,131072,4,40,40
+data success
+init success
+Running Time: 0.381325 s
+Correctness: Correct
+Run 5,131072,8,40,40
+data success
+init success
+Running Time: 0.231523 s
+Correctness: Correct
+Run 5,131072,16,40,40
+data success
+init success
+Running Time: 0.164149 s
+Correctness: Correct
