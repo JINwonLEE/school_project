@@ -15,26 +15,30 @@ with tf.name_scope('weights'):
     W1 = tf.Variable(tf.truncated_normal(shape=[4, 500], stddev=1.0))
     W2 = tf.Variable(tf.truncated_normal(shape=[500, 100], stddev=1.0))
     W3 = tf.Variable(tf.truncated_normal(shape=[100, 10], stddev=1.0))
-    W4 = tf.Variable(tf.truncated_normal(shape=[10, 1], stddev=1.0))
+    W4 = tf.Variable(tf.truncated_normal(shape=[10, 5], stddev=1.0))
+    W5 = tf.Variable(tf.truncated_normal(shape=[5, 1], stddev=1.0))
 
 with tf.name_scope('biases'):
     biases1 = tf.constant(1.1, shape=[1,500])
     biases2 = tf.constant(1.1, shape=[1,100])
     biases3 = tf.constant(1.1, shape=[1,10])
-    biases4 = tf.constant(1.1, shape=[1])
+    biases4 = tf.constant(1.1, shape=[5])
+    biases5 = tf.constant(1.1, shape=[1])
 
     tf.Variable(biases1)
     tf.Variable(biases2)
     tf.Variable(biases3)
     tf.Variable(biases4)
+    tf.Variable(biases5)
 
 
 layer_1 = tf.nn.relu(tf.add(tf.matmul(input_, W1), biases1))
 layer_2 = tf.nn.relu(tf.add(tf.matmul(layer_1, W2), biases2))
 layer_3 = tf.nn.relu(tf.add(tf.matmul(layer_2, W3), biases3))
-layer_4 = tf.add(tf.matmul(layer_3, W4), biases4)
+layer_4 = tf.nn.tanh(tf.add(tf.matmul(layer_3, W4), biases4))
+layer_5 = tf.add(tf.matmul(layer_4, W5), biases5)
 
-acc = tf.subtract(layer_4, output_)
+acc = tf.subtract(layer_5, output_)
 
 loss = tf.pow(acc, tf.constant(value=2.0, shape=[1]))
 
@@ -61,7 +65,7 @@ with tf.Session() as sess:
                 batch_size = (float)(batch_size)
                 speed = (float)(line[1][1:-2])
                 test = sess.run([train_step, loss] , feed_dict={input_:[[n_ps, n_worker, batch_size, n_gpu]], output_:speed})
-                if index % 100 == 0:
+                if index % 277 == 0:
                     accuracy = sess.run([acc], feed_dict={input_:[[n_ps, n_worker, batch_size, n_gpu]], output_:speed})
                     print(accuracy)
 
