@@ -1,0 +1,2 @@
+model_checkpoint_path: "/home/jwl1993/Dropbox/term_project_HPC/5_percent/model.ckpt"
+all_model_checkpoint_paths: "/home/jwl1993/Dropbox/term_project_HPC/5_percent/model.ckpt"
