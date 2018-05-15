@@ -25,6 +25,6 @@ main(){
 	prep
 }
 
-prep
-
+#prep
+parsing
 echo Done.
