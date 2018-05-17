@@ -1,0 +1,48 @@
+
+
+
+<Neural Network>
+
+# I measure the average temperature difference after seperating the dataset in 10 years.
+# All cases trained 10 epochs.
+train_data_1980-201403 test_data/test_data 7.567897
+train_data_1990-201403 test_data/test_data 7.398059
+train_data_2000-201403 test_data/test_data 6.244100
+train_data_2010-201403 test_data/test_data 5.961340
+
+# The result could be suspected as overfiting problem.
+# So, I tested again using less epochs for 1980-201403 and 1990-201403 data.
+# 5 epochs
+train_data_1980-201403 test_data/test_data 6.311843
+train_data_1990-201403 test_data/test_data 7.538416
+train_data_2000-201403 test_data/test_data 6.018650 
+train_data_2010-201403 test_data/test_data 7.600979 
+
+# 1 epochs
+1980:Average Temperature difference : 9.491015 
+1990:Average Temperature difference : 7.113598 
+2000:Average Temperature difference : 7.775667 
+2010:Average Temperature difference : 7.641520 
+
+
+
+
+<Simple RNN>
+
+#1 epochs
+1980:Average Temperature difference : 1.484899 
+1990:Average Temperature difference : 1.604617 
+2000:Average Temperature difference : 1.445608 
+2010:Average Temperature difference : 1.577092 
+
+# 5 epochs
+1980:Average Temperature difference : 1.580758 
+1990:Average Temperature difference : 1.435401 
+2000:Average Temperature difference : 1.431433 
+2010:Average Temperature difference : 1.620725 
+
+# 10 epochs
+1980:Average Temperature difference : 1.516153 
+1990:Average Temperature difference : 1.705157 
+2000:Average Temperature difference : 1.600929 
+2010:Average Temperature difference : 1.490171 
