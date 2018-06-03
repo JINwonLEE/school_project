@@ -22,6 +22,7 @@ for line in data_list:
 
 ''' # Data Processing for making data.txt
 data = pd.read_csv("TCGA_6_Cancer_Type_Mutation_List.csv")
+output = open("TCGA_6_Cancer_Type_Mutation_List_data.csv", "w")
 
 cancer_type_class = data.groupby('Cancer_Type').groups.keys()
 Tumor_Sample_ID_class = data.groupby('Tumor_Sample_ID').groups.keys()
@@ -42,7 +43,7 @@ for index, line in data.iterrows():
     Tumor_Allele_index = Tumor_Allele_class.index(line['Tumor_Allele'])
 
     tuple_ = str(cancer_index) + "," + str(Tumor_Sample_ID_index) + "," + str(Gene_Name_index) + "," + str(Chromosome) + "," + str(Start_p) + "," + str(End_p) + \
-            "," + str(Variant_type_index) + "," + str(Reference_Allele_index) + "," + str(Reference_Allele_index) + "," +  str(Tumor_Allele_index) + "\n"
+            "," + str(Variant_type_index) + "," + str(Reference_Allele_index) + "," +  str(Tumor_Allele_index) + "\n"
 
     output.write(tuple_)
 '''
