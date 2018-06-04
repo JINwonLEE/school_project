@@ -1,32 +1,26 @@
 
 import pandas as pd
+import numpy as np
 
 
-
-
-
-data_list = open("TCGA_6_Cancer_Type_Mutation_List_data.csv", "r")
+from sklearn.model_selection import train_test_split
+'''
+data_list = pd.read_csv("TCGA_6_Cancer_Type_Mutation_List_data.csv")
+train, test = train_test_split(data_list, test_size=0.15)
+train.to_csv("data_list.csv", index=False)
+test.to_csv("test_list.csv", index=False)
 
 #divide data
-data = open("data_list.csv", "w")
-test = open("test_list.csv", "w")
-index = 0
-for line in data_list:
-    index += 1
-    if index % 9 == 0:
-        test.write(line)
-    else:
-        data.write(line)
+'''
 
-
-
-''' # Data Processing for making data.txt
+ # Data Processing for making data.txt
 data = pd.read_csv("TCGA_6_Cancer_Type_Mutation_List.csv")
 output = open("TCGA_6_Cancer_Type_Mutation_List_data.csv", "w")
 
 cancer_type_class = data.groupby('Cancer_Type').groups.keys()
 Tumor_Sample_ID_class = data.groupby('Tumor_Sample_ID').groups.keys()
 Gene_Name_class = data.groupby('Gene_Name').groups.keys()
+Chromosome_class = data.groupby('Chromosome').groups.keys()
 Variant_Type_class = data.groupby('Variant_Type').groups.keys()
 Reference_Allele_class = data.groupby('Reference_Allele').groups.keys()
 Tumor_Allele_class = data.groupby('Tumor_Allele').groups.keys()
@@ -35,7 +29,7 @@ for index, line in data.iterrows():
     cancer_index = cancer_type_class.index(line['Cancer_Type'])
     Tumor_Sample_ID_index = Tumor_Sample_ID_class.index(line['Tumor_Sample_ID'])
     Gene_Name_index = Gene_Name_class.index(line['Gene_Name'])
-    Chromosome = line['Chromosome']
+    Chromosome = Chromosome_class.index(line['Chromosome'])
     Start_p = line['Start_Position']
     End_p = line['End_Position']
     Variant_type_index = Variant_Type_class.index(line['Variant_Type'])
@@ -46,6 +40,6 @@ for index, line in data.iterrows():
             "," + str(Variant_type_index) + "," + str(Reference_Allele_index) + "," +  str(Tumor_Allele_index) + "\n"
 
     output.write(tuple_)
-'''
+
 #print(data.groupby('Cancer_Type').var())
 
