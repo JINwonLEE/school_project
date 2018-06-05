@@ -7,6 +7,14 @@ from keras.models import Sequential, Model
 from keras.layers import Dense, Dropout, Input, concatenate
 from keras.utils import to_categorical
 
+
+
+
+'''
+You should make json 3 json files sample_gene, sample_chrom, sample_variant
+'''
+
+
 whole_data = numpy.loadtxt("TCGA_6_Cancer_Type_Mutation_List_sample2.csv", delimiter=",")
 
 columns = 3
