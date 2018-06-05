@@ -4,10 +4,9 @@ import os
 import csv
 
 
-INPUT_PATH = "/Users/jwl1993/school_project/weather_prediction/"
+INPUT_PATH = "/home/jwl1993/school_project/weather_prediction/"
 num_periods = 4
 hidden = 6
-num_periods = 20        #period that predict output
 batch_sizes = 10
 
 def load_data():
@@ -34,7 +33,18 @@ x_data = np.delete(x_data, 0, 1) #erase date
 index = -1
 
 def next_data(index, batches):
-    return batches[index:index+num_periods]
+    ret = []
+    for i in range(index, index+num_periods):
+        ret.append(batches[i][0])
+    ret = np.asarray(ret)
+    return ret
+
+def next_label(index, batches):
+    batch = []
+    for b in range(index, index + batch_sizes):
+        batch.append(batches[b][0])
+    np.asarray(batch)
+    return batch
 
 #print(len(train_data))
 #print(len(train_data) % num_period
@@ -43,23 +53,27 @@ def next_data(index, batches):
 
 
 tf.reset_default_graph()
-inputs = 1
-output = 1
 
-x = tf.placeholder(tf.float32, [None, num_periods, hidden])
+x = tf.placeholder(tf.float32, [None, num_periods, 1])
 y = tf.placeholder(tf.float32, [1])
 
-basic_cell = tf.contrib.rnn.BasicRNNCell(num_units=1)
-rnn_output, states = tf.nn.dynamic_rnn(basic_cell, x, dtype=tf.float32)
+x_ = tf.reshape(x, [-1,1])
+x_ = tf.Print(x_, [x, y])
+basic_cell = tf.contrib.rnn.BasicLSTMCell(1, forget_bias=1.0, state_is_tuple=True)
+rnn_output, _states = tf.nn.static_rnn(basic_cell,[x_] , dtype=tf.float32)
+#rnn_output, states = tf.nn.dynamic_rnn(basic_cell, x, dtype=tf.float32)
 
+#rnn_output = tf.reshape(rnn_output,[1, num_periods])
+W = tf.Variable(tf.truncated_normal([1, num_periods], stddev=1))
+B = tf.Variable(tf.constant(0.1, shape=[1]))
+#output = tf.contrib.layers.fully_connected(rnn_output[, 1, activation_fn=tf.nn.relu)
+output = tf.matmul(W,rnn_output[-1]) + B
 
-stacked_rnn_output = tf.reshape(rnn_output, [1])
-print(stacked_rnn_output.shape)
+output = tf.reshape(output, [1])
 #outputs = tf.reshape(stacked_output, [1])
-
-loss = tf.reduce_sum(tf.square(stacked_rnn_output - y))
-loss = tf.log(loss)
-train_op = tf.train.AdamOptimizer(1e-4).minimize(loss)
+#output = tf.Print(output, [output, y])
+cost = tf.reduce_mean(tf.nn.softmax_cross_entropy_with_logits(logits=output, labels=y))
+train_op = tf.train.AdamOptimizer(1e-3).minimize(cost)
 
 
 
@@ -68,15 +82,17 @@ init = tf.global_variables_initializer()
 with tf.Session() as sess:
     sess.run(init)
     for epochs in range(50):
-        batch_sizes = 10
         for i in range(6000):
             x_batch = next_data(i, x_data)
-            y_batch = x_data[i+num_periods+1][0]
+            x_batch = np.reshape(x_batch, (-1,num_periods,1))
+            #y_batch = next_label(i+num_periods, x_data)
+            y_batch = x_data[i+num_periods][0]
+            y_batch = np.reshape(y_batch, (1))
             sess.run(train_op, feed_dict={x:x_batch, y:y_batch})
             if i % 100 == 0:
-                loss_ = loss.eval(feed_dict={x:x_batch, y:y_batch})
+                loss_ = cost.eval(feed_dict={x:x_batch, y:y_batch})
                 print("Loss in epoch %i iteration %i : %.4f" % (epochs+1, i, loss_))
-                '''
+            '''
         batch_sizes = 48    #528 * 6 = 3168
         print(x_test)
         print("-"*40)
