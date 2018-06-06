@@ -4,9 +4,16 @@ import os
 import csv
 
 
+<<<<<<< HEAD
 INPUT_PATH = "/home/jwl1993/school_project/weather_prediction/"
 num_periods = 4
 hidden = 6
+=======
+INPUT_PATH = "/Users/jwl1993/school_project/weather_prediction/"
+num_periods = 4
+hidden = 6
+num_periods = 20        #period that predict output
+>>>>>>> 928df1cdbb06263159d9f64e56e96f6dbc5a6bb3
 batch_sizes = 10
 
 def load_data():
@@ -33,6 +40,7 @@ x_data = np.delete(x_data, 0, 1) #erase date
 index = -1
 
 def next_data(index, batches):
+<<<<<<< HEAD
     ret = []
     for i in range(index, index+num_periods):
         ret.append(batches[i][0])
@@ -45,6 +53,9 @@ def next_label(index, batches):
         batch.append(batches[b][0])
     np.asarray(batch)
     return batch
+=======
+    return batches[index:index+num_periods]
+>>>>>>> 928df1cdbb06263159d9f64e56e96f6dbc5a6bb3
 
 #print(len(train_data))
 #print(len(train_data) % num_period
@@ -53,6 +64,7 @@ def next_label(index, batches):
 
 
 tf.reset_default_graph()
+<<<<<<< HEAD
 
 x = tf.placeholder(tf.float32, [None, num_periods, 1])
 y = tf.placeholder(tf.float32, [1])
@@ -74,6 +86,25 @@ output = tf.reshape(output, [1])
 #output = tf.Print(output, [output, y])
 cost = tf.reduce_mean(tf.nn.softmax_cross_entropy_with_logits(logits=output, labels=y))
 train_op = tf.train.AdamOptimizer(1e-3).minimize(cost)
+=======
+inputs = 1
+output = 1
+
+x = tf.placeholder(tf.float32, [None, num_periods, hidden])
+y = tf.placeholder(tf.float32, [1])
+
+basic_cell = tf.contrib.rnn.BasicRNNCell(num_units=1)
+rnn_output, states = tf.nn.dynamic_rnn(basic_cell, x, dtype=tf.float32)
+
+
+stacked_rnn_output = tf.reshape(rnn_output, [1])
+print(stacked_rnn_output.shape)
+#outputs = tf.reshape(stacked_output, [1])
+
+loss = tf.reduce_sum(tf.square(stacked_rnn_output - y))
+loss = tf.log(loss)
+train_op = tf.train.AdamOptimizer(1e-4).minimize(loss)
+>>>>>>> 928df1cdbb06263159d9f64e56e96f6dbc5a6bb3
 
 
 
@@ -82,6 +113,7 @@ init = tf.global_variables_initializer()
 with tf.Session() as sess:
     sess.run(init)
     for epochs in range(50):
+<<<<<<< HEAD
         for i in range(6000):
             x_batch = next_data(i, x_data)
             x_batch = np.reshape(x_batch, (-1,num_periods,1))
@@ -93,6 +125,17 @@ with tf.Session() as sess:
                 loss_ = cost.eval(feed_dict={x:x_batch, y:y_batch})
                 print("Loss in epoch %i iteration %i : %.4f" % (epochs+1, i, loss_))
             '''
+=======
+        batch_sizes = 10
+        for i in range(6000):
+            x_batch = next_data(i, x_data)
+            y_batch = x_data[i+num_periods+1][0]
+            sess.run(train_op, feed_dict={x:x_batch, y:y_batch})
+            if i % 100 == 0:
+                loss_ = loss.eval(feed_dict={x:x_batch, y:y_batch})
+                print("Loss in epoch %i iteration %i : %.4f" % (epochs+1, i, loss_))
+                '''
+>>>>>>> 928df1cdbb06263159d9f64e56e96f6dbc5a6bb3
         batch_sizes = 48    #528 * 6 = 3168
         print(x_test)
         print("-"*40)
