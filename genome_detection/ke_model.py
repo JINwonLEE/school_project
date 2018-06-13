@@ -83,7 +83,7 @@ lay7 = Dense(out_columns, activation='softmax')(lay6)
 model = Model(inputs=[inputs, inputs3], outputs=lay7)
 model.compile(optimizer='sgd', loss='categorical_crossentropy', metrics=['accuracy'])
 #model.fit([x_list, x2_list, x3_list],Y, epochs=30, validation_split=0.2, batch_size=32)
-model.fit([x_list, x3_list],Y, epochs=10, validation_split=0.2, batch_size=8)
+model.fit([x_list, x3_list],Y, epochs=20, validation_split=0.2, batch_size=8)
 
 
 #scores = model.evaluate([x_list, x2_list, x3_list], Y)

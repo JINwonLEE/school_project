@@ -35,6 +35,9 @@ sample_variant = {} #sample to gene which has del / ins
 len_gen = 20743
 len_chrom = 31
 
+from pdb import set_trace
+set_trace()
+
 for index, line in data.iterrows():
     write = False
     cancer_index = cancer_type_class.index(line['Cancer_Type'])
