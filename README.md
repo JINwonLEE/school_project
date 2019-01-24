@@ -1,3 +1,3 @@
-This is Jinwon's school project repository
+This is Jinwon's school project in B.S. course 
 
 Continue..
